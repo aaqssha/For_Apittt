@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halo!</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Indie+Flower&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="start-screen" id="startScreen">
+        <button id="startButton">Click To Start</button>
+    </div>
+
+    <div class="video-container" id="videoContainer">
+        <video id="introVideo" src="CLip.mp4" playsinline preload="auto"></video>
+    </div>
+
+    <div class="book-container" id="bookContainer">
+        <div class="book" id="book" onclick="toggleBook()">
+            <div class="cover">
+                <img src="Balon.png" alt="Birthday Cake">
+                <h1>Kepada Kamu Yang Spesial</h1>
+                <h3><span id="coverName">Afita Din Islami</span></h3>
+            </div>
+            <div class="page">
+                <h2>Happy Birthday!</h2>
+                <p>Dear Apit 🌸</p>
+                <p>Hari ini bukan sekedar hanya pertambahan usiamu, aku percaya dengan bertambah usiamu itu setiap langkah yang kamu ambil pasti bisa di lewati semuanya dengan luar biasa. Semoga di setiap langkahmu selalu ada keberkahan, kemudahan, dan kebahagiaan. Semoga aku juga selalu bisa jadi bagian dari cerita indah perjalanan hidupmu. Happy 21st Birthday, semangat untuk ke depannya ya!.
+                </p>
+                <div class="illustrations">
+                    <img src="Kue.png" alt="Balon">
+                    <img src="Apit.jpeg" alt="Apit">
+                </div>
+                <div class="signature">Aqsha</div>
+            </div>
+        </div>
+        <div class="click-text" id="clickText">
+            ◀️ OPEN
+        </div>
+        <div class="falling-elements" id="fallingElements"></div>
+    </div>
+    
+    <audio id="birthday-song" src="Song.mp3" preload="auto"></audio>
+    
+    <script>
+        const startButton = document.getElementById('startButton');
+        const startScreen = document.getElementById('startScreen');
+        const videoContainer = document.getElementById('videoContainer');
+        const introVideo = document.getElementById('introVideo');
+        const bookContainer = document.getElementById('bookContainer');
+        const body = document.body;
+        const book = document.getElementById('book');
+        const clickText = document.getElementById('clickText');
+        const birthdaySong = document.getElementById('birthday-song');
+        const fallingElementsContainer = document.getElementById('fallingElements');
+
+        startButton.addEventListener('click', () => {
+            startScreen.classList.add('fade-out');
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+                videoContainer.classList.add('active');
+                introVideo.play();
+            }, 1000);
+        });
+
+        introVideo.addEventListener('ended', () => {
+            videoContainer.classList.add('fade-out');
+            
+            setTimeout(() => {
+                videoContainer.classList.remove('active', 'fade-out');
+                bookContainer.classList.add('show');
+            }, 1000); 
+        });
+
+        function toggleBook() {
+            if (book.classList.contains('open')) {
+                
+                book.classList.remove('open');
+                body.classList.remove('open-card');
+                clickText.textContent = '◀️ OPEN';
+                clickText.style.left = 'calc(100% + 20px)';
+                birthdaySong.pause();
+                birthdaySong.currentTime = 0;
+                stopFallingElements();
+            } else {
+                
+                book.classList.add('open');
+                body.classList.add('open-card');
+                clickText.textContent = '◀️ CLOSE';
+                clickText.style.left = 'calc(100% + 20px)';
+                birthdaySong.play();
+                createFallingElements();
+            }
+        }
+
+        function createFallingElements() {
+            fallingElementsContainer.classList.add('active');
+            for (let i = 0; i < 30; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('falling-piece');
+                piece.style.setProperty('--x', `${Math.random() * 100}vw`);
+                piece.style.animationDelay = `${Math.random() * 3}s`;
+                piece.style.animationDuration = `${3 + Math.random() * 2}s`;
+                fallingElementsContainer.appendChild(piece);
+            }
+        }
+
+        function stopFallingElements() {
+            fallingElementsContainer.classList.remove('active');
+            fallingElementsContainer.innerHTML = '';
+        }
+    </script>
+</body>
+</html>
